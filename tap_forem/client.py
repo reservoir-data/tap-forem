@@ -1,7 +1,7 @@
 """REST client handling, including ForemStream base class."""
 
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Sequence
 
 import requests
 from singer_sdk.authenticators import APIKeyAuthenticator
@@ -14,6 +14,14 @@ class ForemStream(RESTStream):
     """Forem stream class."""
 
     records_jsonpath = "$[*]"
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
+        # "List" is invariant -- see
+        # https://mypy.readthedocs.io/en/stable/common_issues.html#variance
+        # Consider using "Sequence" instead, which is covariant
+        self.child_streams: Sequence["ForemStream"] = []  # type: ignore
 
     @property
     def url_base(self) -> str:
@@ -36,6 +44,21 @@ class ForemStream(RESTStream):
         headers = {}
         headers["User-Agent"] = f"{self.tap_name}/{self._tap.plugin_version}"
         return headers
+
+    def should_sync(self, context: Optional[dict]) -> bool:
+        """Check whether stream should be synced based on context."""
+        return True
+
+    def _sync_children(self, child_context: dict) -> None:
+        for child_stream in self.child_streams:
+            if (
+                child_stream.selected or child_stream.has_selected_descendents
+            ) and child_stream.should_sync(child_context):
+                child_stream.sync(context=child_context)
+
+
+class PaginatedForemStream(ForemStream):
+    """Forem stream with pagination."""
 
     def get_next_page_token(
         self,

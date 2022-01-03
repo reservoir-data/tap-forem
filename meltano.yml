@@ -19,9 +19,6 @@ plugins:
       kind: string
     config:
       start_date: '2010-01-01T00:00:00Z'
-    select:
-    - "*.*"
-    - "!comments.*"
   loaders:
   - name: target-sqlite
     variant: meltanolabs
