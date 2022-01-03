@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 
 from singer_sdk import typing as th
 
-from tap_forem.client import ForemStream
+from tap_forem.client import ForemStream, PaginatedForemStream
 
 USER_TYPE = th.ObjectType(
     th.Property("name", th.StringType),
@@ -31,7 +31,7 @@ FLARE_TAG_TYPE = th.ObjectType(
 )
 
 
-class Articles(ForemStream):
+class Articles(PaginatedForemStream):
     """Articles stream."""
 
     name = "articles"
@@ -84,7 +84,7 @@ class Articles(ForemStream):
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         """Get context for article children."""
-        return {"article_id": record["id"]}
+        return {"article_id": record["id"], "comments_count": record["comments_count"]}
 
 
 class Comments(ForemStream):
@@ -92,10 +92,23 @@ class Comments(ForemStream):
 
     name = "comments"
     path = "/comments"
-    primary_keys = ["id"]
+    primary_keys = ["id_code"]
     parent_stream_type = Articles
 
-    schema = th.PropertiesList().to_dict()
+    schema = th.PropertiesList(
+        th.Property(
+            "id_code",
+            th.StringType,
+            description="The comment's system ID",
+            required=True,
+        ),
+        th.Property("type_of", th.StringType),
+        th.Property("created_at", th.DateTimeType),
+        th.Property("article_id", th.IntegerType),
+        th.Property("body_html", th.StringType),
+        th.Property("children", th.ArrayType(th.ObjectType())),
+        th.Property("user", USER_TYPE),
+    ).to_dict()
 
     def get_url_params(
         self,
@@ -107,3 +120,7 @@ class Comments(ForemStream):
         if context:
             params["a_id"] = context["article_id"]
         return params
+
+    def should_sync(self, context: Optional[dict]) -> bool:
+        """Sync comments only if article has any."""
+        return True if context and context["comments_count"] > 0 else False
