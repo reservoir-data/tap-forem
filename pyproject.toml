@@ -13,16 +13,16 @@ keywords = [
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
-python = "<3.11,>=3.6.2"
-singer-sdk = "0.4.2"
+python = "<3.11,>=3.7.1"
+singer-sdk = "0.4.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0.1"
 flake8 = "^4.0.1"
 black = "^22.3"
 pydocstyle = "^6.1.1"
-mypy = "^0.942"
-types-requests = "^2.27.20"
+mypy = "^0.950"
+types-requests = "^2.27.24"
 isort = "^5.10.1"
 
 [tool.isort]
@@ -47,4 +47,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 # CLI declaration
-tap-forem = 'tap_forem.tap:TapForem.cli'
+"tap-forem" = 'tap_forem.tap:TapForem.cli'
