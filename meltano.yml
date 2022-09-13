@@ -26,6 +26,7 @@ plugins:
     config:
       database: output/${MELTANO_EXTRACT__LOAD_SCHEMA}.db
 environments:
+- name: dev
 - name: meltano
   config:
     plugins:
