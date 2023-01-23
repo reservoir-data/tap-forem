@@ -5,9 +5,22 @@ from typing import Any, Dict, Optional, Sequence
 
 import requests
 from singer_sdk.authenticators import APIKeyAuthenticator
+from singer_sdk.pagination import BasePageNumberPaginator
 from singer_sdk.streams import RESTStream
 
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
+
+
+class ForemPaginator(BasePageNumberPaginator):
+    """A paginator for Forem endpoints."""
+
+    def has_more(self, response: requests.Response) -> bool:
+        """Whether the endpoint has more records.
+
+        Returns:
+            True if the endpoint has more data to sync.
+        """
+        return len(response.json()) > 0
 
 
 class ForemStream(RESTStream):
@@ -60,24 +73,13 @@ class ForemStream(RESTStream):
 class PaginatedForemStream(ForemStream):
     """Forem stream with pagination."""
 
-    def get_next_page_token(
-        self,
-        response: requests.Response,
-        previous_token: Optional[Any],
-    ) -> Any:
-        """Get next page offset.
-
-        Args:
-            response: API response.
-            previous_token: Previous offset.
+    def get_new_paginator(self) -> ForemPaginator:
+        """Get a fresh paginator.
 
         Returns:
-            Page offset.
+            A new paginator for the Forem API.
         """
-        if not len(response.json()):
-            return None
-
-        return 1 if previous_token is None else previous_token + 1
+        return ForemPaginator(1)
 
     def get_url_params(
         self,
