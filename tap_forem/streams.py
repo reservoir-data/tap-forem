@@ -14,6 +14,7 @@ USER_TYPE = th.ObjectType(
     th.Property("website_url", th.StringType),
     th.Property("profile_image", th.StringType),
     th.Property("profile_image_90", th.StringType),
+    th.Property("user_id", th.IntegerType),
 )
 
 ORG_TYPE = th.ObjectType(
@@ -61,6 +62,7 @@ class Articles(PaginatedForemStream):
         th.Property("published_at", th.DateTimeType),
         th.Property("last_comment_at", th.DateTimeType),
         th.Property("tag_list", th.ArrayType(th.StringType)),
+        th.Property("tags", th.StringType),
         th.Property("collection_id", th.IntegerType),
         th.Property("reading_time_minutes", th.IntegerType),
         th.Property("comments_count", th.IntegerType),
@@ -70,6 +72,9 @@ class Articles(PaginatedForemStream):
         th.Property("user", USER_TYPE),
         th.Property("organization", ORG_TYPE),
         th.Property("flare_tag", FLARE_TAG_TYPE),
+        th.Property("readable_publish_date", th.StringType),
+        th.Property("published_timestamp", th.DateTimeType),
+
     ).to_dict()
 
     def get_url_params(

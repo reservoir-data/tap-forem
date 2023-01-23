@@ -7,6 +7,8 @@ from singer_sdk import typing as th
 
 from tap_forem.streams import Articles, Comments
 
+__all__ = ["TapForem"]
+
 STREAM_TYPES = [
     Articles,
     Comments,
