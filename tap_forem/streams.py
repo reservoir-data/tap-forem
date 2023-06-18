@@ -1,6 +1,7 @@
 """Stream type classes for tap-forem."""
+from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from singer_sdk import typing as th
 
@@ -74,20 +75,23 @@ class Articles(PaginatedForemStream):
         th.Property("flare_tag", FLARE_TAG_TYPE),
         th.Property("readable_publish_date", th.StringType),
         th.Property("published_timestamp", th.DateTimeType),
-
     ).to_dict()
 
     def get_url_params(
         self,
-        context: Optional[dict],
-        next_page_token: Optional[Any],
-    ) -> Dict[str, Any]:
+        context: dict | None,
+        next_page_token: Any | None,
+    ) -> dict[str, Any]:
         """Get query parameters."""
         params = super().get_url_params(context, next_page_token)
         params["tag"] = self.config.get("tag")
         return params
 
-    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+    def get_child_context(
+        self,
+        record: dict,
+        context: dict | None,  # noqa: ARG002
+    ) -> dict:
         """Get context for article children."""
         return {"article_id": record["id"], "comments_count": record["comments_count"]}
 
@@ -117,15 +121,15 @@ class Comments(ForemStream):
 
     def get_url_params(
         self,
-        context: Optional[dict],
-        next_page_token: Optional[Any],
-    ) -> Dict[str, Any]:
+        context: dict | None,
+        next_page_token: Any | None,
+    ) -> dict[str, Any]:
         """Get query parameters."""
         params = super().get_url_params(context, next_page_token)
         if context:
             params["a_id"] = context["article_id"]
         return params
 
-    def should_sync(self, context: Optional[dict]) -> bool:
+    def should_sync(self, context: dict | None) -> bool:
         """Sync comments only if article has any."""
-        return True if context and context["comments_count"] > 0 else False
+        return bool(context and context["comments_count"] > 0)
