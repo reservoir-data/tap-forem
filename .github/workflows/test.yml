@@ -1,6 +1,26 @@
 name: Test tap-forem
 
-on: [push]
+on:
+  push:
+    branches: [main]
+    paths:
+      - tap_forem/**
+      - tests/**
+      - noxfile.py
+      - poetry.lock
+      - pyproject.toml
+      - .github/workflows/test.yml
+      - .github/workflows/resources/constraints.txt
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - tap_forem/**
+      - tests/**
+      - noxfile.py
+      - poetry.lock
+      - pyproject.toml
+      - .github/workflows/test.yml
+      - .github/workflows/resources/constraints.txt
 
 jobs:
   tests:
@@ -13,10 +33,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3.2.0
+      uses: actions/checkout@v3.5.3
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4.4.0
+      uses: actions/setup-python@v4.6.1
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -30,13 +50,14 @@ jobs:
         pipx install poetry
         poetry --version
 
-    - name: Install tox
+    - name: Install Nox
       run: |
-        pipx install tox
-        tox --version
+        pipx install nox
+        pipx inject nox nox-poetry
+        nox --version
 
-    - name: Run lint command from tox.ini
+    - name: Run Nox
       env:
         TAP_FOREM_API_KEY: ${{ secrets.TAP_FOREM_API_KEY }}
       run: |
-        tox -e pytest
+        nox

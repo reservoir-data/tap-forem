@@ -1,6 +1,5 @@
 """Forem tap class."""
-
-from typing import List
+from __future__ import annotations
 
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
@@ -41,6 +40,6 @@ class TapForem(Tap):
         ),
     ).to_dict()
 
-    def discover_streams(self) -> List[Stream]:
+    def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams."""
         return [stream_class(tap=self) for stream_class in STREAM_TYPES]

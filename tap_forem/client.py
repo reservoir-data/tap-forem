@@ -1,12 +1,16 @@
 """REST client handling, including ForemStream base class."""
 
-from pathlib import Path
-from typing import Any, Dict, Optional, Sequence
+from __future__ import annotations
 
-import requests
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Sequence
+
 from singer_sdk.authenticators import APIKeyAuthenticator
 from singer_sdk.pagination import BasePageNumberPaginator
 from singer_sdk.streams import RESTStream
+
+if TYPE_CHECKING:
+    import requests
 
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
@@ -28,13 +32,18 @@ class ForemStream(RESTStream):
 
     records_jsonpath = "$[*]"
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
+        """Initialize Forem stream."""
         super().__init__(*args, **kwargs)
 
         # "List" is invariant -- see
         # https://mypy.readthedocs.io/en/stable/common_issues.html#variance
         # Consider using "Sequence" instead, which is covariant
-        self.child_streams: Sequence["ForemStream"] = []  # type: ignore
+        self.child_streams: Sequence[ForemStream] = []
 
     @property
     def url_base(self) -> str:
@@ -54,11 +63,12 @@ class ForemStream(RESTStream):
     @property
     def http_headers(self) -> dict:
         """Return the http headers needed."""
-        headers = {}
-        headers["User-Agent"] = f"{self.tap_name}/{self._tap.plugin_version}"
-        return headers
+        return {"User-Agent": f"{self.tap_name}/{self._tap.plugin_version}"}
 
-    def should_sync(self, context: Optional[dict]) -> bool:
+    def should_sync(
+        self,
+        context: dict | None,  # noqa: ARG002
+    ) -> bool:
         """Check whether stream should be synced based on context."""
         return True
 
@@ -83,9 +93,9 @@ class PaginatedForemStream(ForemStream):
 
     def get_url_params(
         self,
-        context: Optional[dict],
-        next_page_token: Optional[Any],
-    ) -> Dict[str, Any]:
+        context: dict | None,  # noqa: ARG002
+        next_page_token: Any | None,
+    ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         return {
             "page": next_page_token,
