@@ -1,7 +1,7 @@
 """Stream type classes for tap-forem."""
 from __future__ import annotations
 
-from typing import Any
+import typing as t
 
 from singer_sdk import typing as th
 
@@ -38,7 +38,7 @@ class Articles(PaginatedForemStream):
 
     name = "articles"
     path = "/articles"
-    primary_keys = ["id"]
+    primary_keys: t.ClassVar[list[str]] = ["id"]
 
     schema = th.PropertiesList(
         th.Property(
@@ -80,8 +80,8 @@ class Articles(PaginatedForemStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: Any | None,
-    ) -> dict[str, Any]:
+        next_page_token: t.Any | None,  # noqa: ANN401
+    ) -> dict[str, t.Any]:
         """Get query parameters."""
         params = super().get_url_params(context, next_page_token)
         params["tag"] = self.config.get("tag")
@@ -101,7 +101,7 @@ class Comments(ForemStream):
 
     name = "comments"
     path = "/comments"
-    primary_keys = ["id_code"]
+    primary_keys: t.ClassVar[list[str]] = ["id_code"]
     parent_stream_type = Articles
 
     schema = th.PropertiesList(
@@ -122,8 +122,8 @@ class Comments(ForemStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: Any | None,
-    ) -> dict[str, Any]:
+        next_page_token: t.Any | None,  # noqa: ANN401
+    ) -> dict[str, t.Any]:
         """Get query parameters."""
         params = super().get_url_params(context, next_page_token)
         if context:

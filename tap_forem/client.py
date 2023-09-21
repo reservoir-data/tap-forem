@@ -94,7 +94,7 @@ class PaginatedForemStream(ForemStream):
     def get_url_params(
         self,
         context: dict | None,  # noqa: ARG002
-        next_page_token: Any | None,
+        next_page_token: Any | None,  # noqa: ANN401
     ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         return {
