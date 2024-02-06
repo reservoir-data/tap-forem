@@ -43,6 +43,8 @@ optional-dependencies.testing = [
 optional-dependencies.typing = [
   "mypy",
 ]
+urls."Issue Tracker" = "https://github.com/edgarrmondragon/tap-forem/issues"
+urls.Repository = "https://github.com/edgarrmondragon/tap-forem"
 scripts."tap-forem" = 'tap_forem.tap:TapForem.cli'
 
 [tool.hatch.version]
@@ -126,6 +128,7 @@ filterwarnings = [
 
 [tool.mypy]
 python_version = "3.12"
+warn_no_return = true
 warn_redundant_casts = true
 warn_unreachable = true
 warn_unused_configs = true
