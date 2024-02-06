@@ -38,7 +38,7 @@ class Articles(PaginatedForemStream):
 
     name = "articles"
     path = "/articles"
-    primary_keys: t.ClassVar[list[str]] = ["id"]
+    primary_keys = ("id",)
 
     schema = th.PropertiesList(
         th.Property(
@@ -79,7 +79,7 @@ class Articles(PaginatedForemStream):
 
     def get_url_params(
         self,
-        context: dict | None,
+        context: dict[str, t.Any] | None,
         next_page_token: t.Any | None,  # noqa: ANN401
     ) -> dict[str, t.Any]:
         """Get query parameters."""
@@ -89,9 +89,9 @@ class Articles(PaginatedForemStream):
 
     def get_child_context(
         self,
-        record: dict,
-        context: dict | None,  # noqa: ARG002
-    ) -> dict:
+        record: dict[str, t.Any],
+        context: dict[str, t.Any] | None,  # noqa: ARG002
+    ) -> dict[str, t.Any]:
         """Get context for article children."""
         return {"article_id": record["id"], "comments_count": record["comments_count"]}
 
@@ -101,7 +101,7 @@ class Comments(ForemStream):
 
     name = "comments"
     path = "/comments"
-    primary_keys: t.ClassVar[list[str]] = ["id_code"]
+    primary_keys = ("id_code",)
     parent_stream_type = Articles
 
     schema = th.PropertiesList(
@@ -121,15 +121,15 @@ class Comments(ForemStream):
 
     def get_url_params(
         self,
-        context: dict | None,
+        context: dict[str, t.Any] | None,
         next_page_token: t.Any | None,  # noqa: ANN401
-    ) -> dict[str, t.Any]:
+    ) -> dict[str, t.Any] | str:
         """Get query parameters."""
         params = super().get_url_params(context, next_page_token)
         if context:
-            params["a_id"] = context["article_id"]
+            params["a_id"] = context["article_id"]  # type: ignore[index]
         return params
 
-    def should_sync(self, context: dict | None) -> bool:
+    def should_sync(self, context: dict[str, t.Any] | None) -> bool:
         """Sync comments only if article has any."""
         return bool(context and context["comments_count"] > 0)
