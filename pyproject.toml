@@ -1,33 +1,72 @@
 [build-system]
-build-backend = "poetry.core.masonry.api"
+build-backend = "hatchling.build"
 requires = [
-  "poetry-core==1.8.*",
+  "hatch-vcs",
+  "hatchling",
 ]
 
-[tool.poetry]
+[project]
 name = "tap-forem"
-version = "0.0.1"
 description = "`tap-forem` is a Singer tap for Forem, built with the Meltano SDK for Singer Taps."
-authors = [
-    "Edgar Ramírez-Mondragón <edgarrm358@gmail.com>",
-]
+readme = "README.md"
 keywords = [
-    "ELT",
-    "Forem",
-    "singer.io",
+  "ELT",
+  "Forem",
+  "singer.io",
 ]
-license = "Apache-2.0"
+license.file = "LICENSE"
+maintainers = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
+authors = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dynamic = [
+  "version",
+]
+dependencies = [
+  "singer-sdk~=0.35.0",
+]
+optional-dependencies.dev = [
+  "tap-forem[testing,typing]",
+]
+optional-dependencies.testing = [
+  "deptry>=0.12",
+  "pytest>=7.4",
+  "singer-sdk[testing]~=0.35.0",
+]
+optional-dependencies.typing = [
+  "mypy",
+]
+scripts."tap-forem" = 'tap_forem.tap:TapForem.cli'
 
-[tool.poetry.dependencies]
-python = ">=3.8,<4"
-singer-sdk = "~=0.34.0"
+[tool.hatch.version]
+source = "vcs"
 
-[tool.poetry.group.dev.dependencies]
-singer-sdk = {version="*", extras=["testing"]}
+[tool.hatch.envs.sync.scripts]
+console = "tap-forem {args}"
+jsonl = "tap-forem {args} > tap-forem.jsonl"
 
-[tool.poetry.scripts]
-# CLI declaration
-"tap-forem" = 'tap_forem.tap:TapForem.cli'
+[tool.hatch.envs.test]
+features = ["testing"]
+[tool.hatch.envs.test.scripts]
+integration = "pytest {args:tests}"
+dependencies = "deptry ."
+
+[tool.hatch.envs.all]
+template = "test"
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.typing]
+features = ["testing", "typing"]
+[tool.hatch.envs.typing.scripts]
+check = "mypy --strict {args:tap_forem tests}"
 
 [tool.ruff]
 line-length = 88
@@ -65,12 +104,30 @@ required-imports = ["from __future__ import annotations"]
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
+[tool.deptry.package_module_name_map]
+mypy = "mypy"
+singer-sdk = "singer_sdk"
+tap-forem = "tap_forem"
+
+[tool.deptry.per_rule_ignores]
+DEP002 = [
+  "deptry",
+  "mypy",
+  "pytest",
+]
+
 [tool.pytest.ini_options]
 addopts = "-vvv"
+filterwarnings = [
+  "error",
+  "default:Fields in transformed catalog but not in records:UserWarning",
+  "default:No records were available to test:UserWarning",
+]
 
 [tool.mypy]
-python_version = 3.9
+python_version = "3.12"
 warn_redundant_casts = true
+warn_unreachable = true
 warn_unused_configs = true
 warn_unused_ignores = true
 
