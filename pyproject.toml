@@ -73,7 +73,6 @@ check = "mypy --strict {args:tap_forem tests}"
 [tool.ruff]
 line-length = 88
 src = ["[[ tap_package_import_name ]]", "tests"]
-target-version = "py38"
 
 [tool.ruff.lint]
 ignore = [
