@@ -35,7 +35,10 @@ class ForemStream(RESTStream[int]):
     @property
     def http_headers(self) -> dict[str, str]:
         """Return the http headers needed."""
-        return {"User-Agent": f"{self.tap_name}/{self._tap.plugin_version}"}
+        return {
+            "User-Agent": f"{self.tap_name}/{self._tap.plugin_version}",
+            "Accept": "application/vnd.forem.api-v1+json",
+        }
 
 
 class PaginatedForemStream(ForemStream):
