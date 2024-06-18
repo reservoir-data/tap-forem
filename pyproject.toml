@@ -30,7 +30,7 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "singer-sdk~=0.37.0",
+  "singer-sdk~=0.38.0",
 ]
 optional-dependencies.dev = [
   "tap-forem[testing,typing]",
