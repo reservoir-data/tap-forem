@@ -15,8 +15,12 @@ keywords = [
   "singer.io",
 ]
 license.file = "LICENSE"
-maintainers = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
-authors = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
+maintainers = [
+  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
+]
+authors = [
+  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
+]
 requires-python = ">=3.8"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
@@ -45,7 +49,7 @@ optional-dependencies.typing = [
 ]
 urls."Issue Tracker" = "https://github.com/edgarrmondragon/tap-forem/issues"
 urls.Repository = "https://github.com/edgarrmondragon/tap-forem"
-scripts."tap-forem" = 'tap_forem.tap:TapForem.cli'
+scripts."tap-forem" = "tap_forem.tap:TapForem.cli"
 
 [tool.hatch.version]
 source = "vcs"
@@ -55,7 +59,9 @@ console = "tap-forem {args}"
 jsonl = "tap-forem {args} > tap-forem.jsonl"
 
 [tool.hatch.envs.test]
-features = ["testing"]
+features = [
+  "testing",
+]
 [tool.hatch.envs.test.scripts]
 integration = "pytest {args:tests}"
 dependencies = "deptry ."
@@ -63,47 +69,58 @@ dependencies = "deptry ."
 [tool.hatch.envs.all]
 template = "test"
 [[tool.hatch.envs.all.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python = [
+  "3.8",
+  "3.9",
+  "3.10",
+  "3.11",
+  "3.12",
+]
 
 [tool.hatch.envs.typing]
-features = ["testing", "typing"]
+features = [
+  "testing",
+  "typing",
+]
 [tool.hatch.envs.typing.scripts]
 check = "mypy --strict {args:tap_forem tests}"
 
 [tool.ruff]
 line-length = 88
-src = ["[[ tap_package_import_name ]]", "tests"]
-
-[tool.ruff.lint]
-ignore = [
-  "ANN101",  # missing-type-self
-  "DJ",      # flake8-django
-  "FIX002",  # line-contains-todo
-  "COM812",  # missing-trailing-comma
-  "ISC001",  # single-line-implicit-string-concatenation
-]
-select = ["ALL"]
-unfixable = [
-  "ERA001",  # commented-out-code
+src = [
+  "[[ tap_package_import_name ]]",
+  "tests",
 ]
 
-[tool.ruff.lint.flake8-annotations]
-allow-star-arg-any = true
-
-[tool.ruff.lint.per-file-ignores]
-"noxfile.py" = ["ANN"]
-"tests/*" = [
-  "ANN201",  # missing-return-type-public-function
-  "S101",    # assert
-  "SLF001",  # private-member-access
+lint.select = [
+  "ALL",
 ]
-
-[tool.ruff.lint.isort]
-known-first-party = ["tap_forem"]
-required-imports = ["from __future__ import annotations"]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+lint.ignore = [
+  "ANN101", # missing-type-self
+  "COM812", # missing-trailing-comma
+  "DJ",     # flake8-django
+  "FIX002", # line-contains-todo
+  "ISC001", # single-line-implicit-string-concatenation
+]
+lint.per-file-ignores."noxfile.py" = [
+  "ANN",
+]
+lint.per-file-ignores."tests/*" = [
+  "ANN201", # missing-return-type-public-function
+  "S101",   # assert
+  "SLF001", # private-member-access
+]
+lint.unfixable = [
+  "ERA001", # commented-out-code
+]
+lint.flake8-annotations.allow-star-arg-any = true
+lint.isort.known-first-party = [
+  "tap_forem",
+]
+lint.isort.required-imports = [
+  "from __future__ import annotations",
+]
+lint.pydocstyle.convention = "google"
 
 [tool.deptry.package_module_name_map]
 mypy = "mypy"
@@ -134,5 +151,7 @@ warn_unused_configs = true
 warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
-module = ["backoff.*"]
+module = [
+  "backoff.*",
+]
 ignore_missing_imports = true
