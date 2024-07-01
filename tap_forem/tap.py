@@ -1,4 +1,5 @@
 """Forem tap class."""
+
 from __future__ import annotations
 
 from singer_sdk import Stream, Tap
