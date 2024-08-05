@@ -8,6 +8,9 @@ from singer_sdk import typing as th
 
 from tap_forem.client import ForemStream, PaginatedForemStream
 
+if t.TYPE_CHECKING:
+    from singer_sdk.helpers.types import Context
+
 USER_TYPE = th.ObjectType(
     th.Property("name", th.StringType),
     th.Property("username", th.StringType),
@@ -80,7 +83,7 @@ class Articles(PaginatedForemStream):
 
     def get_url_params(
         self,
-        context: dict[str, t.Any] | None,
+        context: Context | None,
         next_page_token: t.Any | None,  # noqa: ANN401
     ) -> dict[str, t.Any]:
         """Get query parameters."""
@@ -91,7 +94,7 @@ class Articles(PaginatedForemStream):
     def get_child_context(
         self,
         record: dict[str, t.Any],
-        context: dict[str, t.Any] | None,  # noqa: ARG002
+        context: Context | None,  # noqa: ARG002
     ) -> dict[str, t.Any]:
         """Get context for article children."""
         return {"article_id": record["id"], "comments_count": record["comments_count"]}
@@ -122,7 +125,7 @@ class Comments(ForemStream):
 
     def get_url_params(
         self,
-        context: dict[str, t.Any] | None,
+        context: Context | None,
         next_page_token: t.Any | None,  # noqa: ANN401
     ) -> dict[str, t.Any] | str:
         """Get query parameters."""
@@ -131,6 +134,6 @@ class Comments(ForemStream):
             params["a_id"] = context["article_id"]  # type: ignore[index]
         return params
 
-    def should_sync(self, context: dict[str, t.Any] | None) -> bool:
+    def should_sync(self, context: Context | None) -> bool:
         """Sync comments only if article has any."""
         return bool(context and context["comments_count"] > 0)
