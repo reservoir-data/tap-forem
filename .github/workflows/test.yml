@@ -62,11 +62,12 @@ jobs:
 
     - name: Install Hatch
       run: |
-        pipx install --python '${{ steps.setup-python.outputs.python-path }}' hatch
+        pipx install hatch
         hatch --version
 
     - name: Run
       env:
+        HATCH_PYTHON: ${{ steps.setup-python.outputs.python-path }}
         TAP_FOREM_API_KEY: ${{ secrets.TAP_FOREM_API_KEY }}
       run: |
         hatch run ${{ matrix.script }}
