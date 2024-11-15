@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import typing as t
-from pathlib import Path
 
 from singer_sdk.authenticators import APIKeyAuthenticator
 from singer_sdk.pagination import BasePageNumberPaginator
@@ -11,8 +10,6 @@ from singer_sdk.streams import RESTStream
 
 if t.TYPE_CHECKING:
     from singer_sdk.helpers.types import Context
-
-SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 
 class ForemStream(RESTStream[int]):
