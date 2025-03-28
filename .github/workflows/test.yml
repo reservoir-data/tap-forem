@@ -7,66 +7,66 @@ on:
       - tap_forem/**
       - tests/**
       - pyproject.toml
+      - tox.ini
+      - uv.lock
       - .github/workflows/test.yml
-      - .github/workflows/constraints.txt
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - tap_forem/**
       - tests/**
       - pyproject.toml
+      - tox.ini
+      - uv.lock
       - .github/workflows/test.yml
-      - .github/workflows/constraints.txt
   workflow_dispatch:
   schedule:
   # Every 4 days at 12:00 UTC
   - cron: "0 12 */4 * *"
 
+env:
+  FORCE_COLOR: "1"
+  TOX_VERSION: 4.25.0
+  TOX_UV_VERSION: 1.25.0
+  UV_VERSION: 0.6.10
+
 jobs:
   tests:
     runs-on: ubuntu-latest
-    env:
-      FORCE_COLOR: "1"
-      PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
     strategy:
       fail-fast: false
       matrix:
         script: ["test:integration"]
         python-version:
-        - "3.9"
-        - "3.10"
-        - "3.11"
-        - "3.12"
         - "3.13"
+        - "3.12"
+        - "3.11"
+        - "3.10"
+        - "3.9"
         include:
-        - { script: "test:dependencies", python-version: "3.x" }
-        - { script: "typing:check",      python-version: "3.x" }
+        - { environment: "dependencies", python-version: "3.x" }
+        - { environment: "typing",       python-version: "3.x" }
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5.5.0
       id: setup-python
       with:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
         cache: pip
-
-    - name: Upgrade pip
-      run: |
-        pip install pip
-        pip --version
-
-    - name: Install Hatch
-      run: |
-        pipx install hatch
-        hatch --version
-
+    - uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 # v5.4.0
+      with:
+        version: ${{ env.UV_VERSION }}
     - name: Run
       env:
-        HATCH_PYTHON: ${{ steps.setup-python.outputs.python-path }}
+        UV_PYTHON: ${{ steps.setup-python.outputs.python-path }}
         TAP_FOREM_API_KEY: ${{ secrets.TAP_FOREM_API_KEY }}
-      run: |
-        hatch run ${{ matrix.script }}
+      run: >
+        uvx
+        --with tox-uv==${{ env.TOX_UV_VERSION }}
+        --with tox==${{ env.TOX_VERSION }}
+        tox -e ${{ matrix.environment || matrix.python-version }}

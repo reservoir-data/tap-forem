@@ -36,54 +36,26 @@ dynamic = [
 dependencies = [
   "singer-sdk~=0.44.0",
 ]
-optional-dependencies.dev = [
-  "tap-forem[testing,typing]",
-]
-optional-dependencies.testing = [
-  "deptry>=0.12",
-  "pytest>=7.4",
-  "singer-sdk[testing]",
-]
-optional-dependencies.typing = [
-  "mypy",
-]
 urls."Issue Tracker" = "https://github.com/edgarrmondragon/tap-forem/issues"
 urls.Repository = "https://github.com/edgarrmondragon/tap-forem"
 scripts."tap-forem" = "tap_forem.tap:TapForem.cli"
 
+[dependency-groups]
+dev = [
+  { include-group = "testing" },
+  { include-group = "typing" },
+]
+testing = [
+  "deptry>=0.12",
+  "pytest>=7.4",
+  "singer-sdk[testing]",
+]
+typing = [
+  "mypy",
+]
+
 [tool.hatch.version]
 source = "vcs"
-
-[tool.hatch.envs.sync.scripts]
-console = "tap-forem {args}"
-jsonl = "tap-forem {args} > tap-forem.jsonl"
-
-[tool.hatch.envs.test]
-features = [
-  "testing",
-]
-[tool.hatch.envs.test.scripts]
-integration = "pytest {args:tests}"
-dependencies = "deptry ."
-
-[tool.hatch.envs.all]
-template = "test"
-[[tool.hatch.envs.all.matrix]]
-python = [
-  "3.9",
-  "3.10",
-  "3.11",
-  "3.12",
-  "3.13",
-]
-
-[tool.hatch.envs.typing]
-features = [
-  "testing",
-  "typing",
-]
-[tool.hatch.envs.typing.scripts]
-check = "mypy --strict {args:tap_forem tests}"
 
 [tool.ruff]
 line-length = 88
@@ -96,7 +68,6 @@ lint.select = [
   "ALL",
 ]
 lint.ignore = [
-  "ANN101", # missing-type-self
   "COM812", # missing-trailing-comma
   "DJ",     # flake8-django
   "FIX002", # line-contains-todo
@@ -124,15 +95,6 @@ lint.pydocstyle.convention = "google"
 
 [tool.deptry.package_module_name_map]
 mypy = "mypy"
-singer-sdk = "singer_sdk"
-tap-forem = "tap_forem"
-
-[tool.deptry.per_rule_ignores]
-DEP002 = [
-  "deptry",
-  "mypy",
-  "pytest",
-]
 
 [tool.pyproject-fmt]
 max_supported_python = "3.13"
