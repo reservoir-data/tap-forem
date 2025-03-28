@@ -1,6 +1,8 @@
 version: 1
 send_anonymous_usage_stats: true
 project_id: dda4156e-bb27-489c-93ca-aeacbc92a478
+venv:
+  backend: uv
 plugins:
   extractors:
   - name: tap-forem
@@ -12,7 +14,8 @@ plugins:
     - discover
     settings:
     - name: api_key
-      kind: password
+      kind: string
+      sensitive: true
     - name: tag
       kind: string
     - name: api_url

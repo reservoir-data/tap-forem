@@ -32,3 +32,10 @@ repos:
     rev: v4.1.0
     hooks:
       - id: validate_manifest
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.32.1
+    hooks:
+      - id: check-dependabot
+      - id: check-github-workflows
+      - id: check-meltano
