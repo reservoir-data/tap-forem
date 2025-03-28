@@ -17,10 +17,10 @@ Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Target
 
 ## Settings
 
-| Setting | Required | Default | Description |
-|:--------|:--------:|:-------:|:------------|
-| api_key | True     | None    | The Forem API key. |
-| tag     | True     | None    | Tag for filter articles by. |
+| Setting | Required | Default             | Description                  |
+| :------ | :------- | :------------------ | :--------------------------- |
+| api_key | True     | None                | The Forem API key.           |
+| tag     | True     | None                | Tag for filter articles by.  |
 | api_url | False    | https://dev.to/api/ | The url for the API service. |
 
 A full list of supported settings and capabilities is available by running: `tap-forem --about`
@@ -45,9 +45,12 @@ tap-forem --config CONFIG --discover > ./catalog.json
 
 ### Initialize your Development Environment
 
+First, [install uv](https://docs.astral.sh/uv/getting-started/installation/).
+
+Then, install the project dependencies:
+
 ```bash
-pipx install poetry
-poetry install
+uv sync
 ```
 
 ### Create and Run Tests
@@ -56,13 +59,13 @@ Create tests within the `tests` folder and
   then run:
 
 ```bash
-poetry run pytest
+uv run pytest
 ```
 
-You can also test the `tap-forem` CLI interface directly using `poetry run`:
+You can also test the `tap-forem` CLI interface directly using `uv run`:
 
 ```bash
-poetry run tap-forem --help
+uv run tap-forem --help
 ```
 
 ### Testing with [Meltano](https://www.meltano.com)
@@ -77,7 +80,8 @@ Next, install Meltano (if you haven't already) and any needed plugins:
 
 ```bash
 # Install meltano
-pipx install meltano
+uv tool install meltano
+
 # Initialize meltano within this directory
 cd tap-forem
 meltano install
@@ -88,8 +92,9 @@ Now you can test and orchestrate using Meltano:
 ```bash
 # Test invocation:
 meltano invoke tap-forem --version
-# OR run a test `elt` pipeline:
-meltano elt tap-forem target-jsonl
+
+# Or run a pipeline:
+meltano run tap-forem target-jsonl
 ```
 
 ### SDK Dev Guide
