@@ -26,11 +26,11 @@ on:
 
 env:
   FORCE_COLOR: "1"
-  # renovate: datasource=pypi depName=uv
-  TOX_VERSION: 4.25.0
   # renovate: datasource=pypi depName=tox
-  TOX_UV_VERSION: 1.25.0
+  TOX_VERSION: 4.25.0
   # renovate: datasource=pypi depName=tox-uv
+  TOX_UV_VERSION: 1.25.0
+  # renovate: datasource=pypi depName=uv
   UV_VERSION: 0.6.10
 
 jobs:
