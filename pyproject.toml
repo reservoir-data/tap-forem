@@ -105,7 +105,7 @@ addopts = "-vvv"
 filterwarnings = [
   "error",
   "default:Fields in transformed catalog but not in records:UserWarning",
-  # Deprecation message introduced in Python3.14. Upstream PR: https://github.com/litl/backoff/pull/220
+  # Deprecation message introduced in Python 3.14. Upstream PR: https://github.com/litl/backoff/pull/220
   "default:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning",
 ]
 
