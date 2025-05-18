@@ -29,6 +29,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
 dynamic = [
   "version",
@@ -97,15 +98,15 @@ lint.pydocstyle.convention = "google"
 mypy = "mypy"
 
 [tool.pyproject-fmt]
-max_supported_python = "3.13"
+max_supported_python = "3.14"
 
 [tool.pytest.ini_options]
 addopts = "-vvv"
 filterwarnings = [
   "error",
   "default:Fields in transformed catalog but not in records:UserWarning",
-  "default:No records were available to test:UserWarning",
-  "default:Use `http_method` instead:singer_sdk.helpers._compat.SingerSDKDeprecationWarning",
+  # Deprecation message introduced in Python 3.14. Upstream PR: https://github.com/litl/backoff/pull/220
+  "default:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning",
 ]
 
 [tool.mypy]
