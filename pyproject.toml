@@ -35,7 +35,7 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "singer-sdk~=0.45.0",
+  "singer-sdk~=0.46.3",
 ]
 urls."Issue Tracker" = "https://github.com/edgarrmondragon/tap-forem/issues"
 urls.Repository = "https://github.com/edgarrmondragon/tap-forem"
