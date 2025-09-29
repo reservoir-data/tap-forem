@@ -25,8 +25,7 @@ class ForemStream(RESTStream[int]):
     @property
     def authenticator(self) -> APIKeyAuthenticator:
         """Return a new authenticator object."""
-        return APIKeyAuthenticator.create_for_stream(
-            self,
+        return APIKeyAuthenticator(
             key="api-key",
             value=self.config["api_key"],
             location="header",
