@@ -52,6 +52,7 @@ testing = [
 ]
 typing = [
   "mypy",
+  "ty>=0.0.1a26",
 ]
 
 [tool.hatch.version]
@@ -132,7 +133,10 @@ commands = [ [ "deptry", "." ] ]
 
 [tool.tox.env.typing]
 dependency_groups = [ "testing", "typing" ]
-commands = [ [ "mypy", "--strict", { replace = "posargs", default = [ "tap_forem", "tests" ], extend = true } ] ]
+commands = [
+  [ "mypy", "--strict", { replace = "posargs", default = [ "tap_forem", "tests" ], extend = true } ],
+  [ "ty", "check", { replace = "posargs", default = [ "tap_forem", "tests" ], extend = true } ],
+]
 
 [tool.mypy]
 warn_no_return = true
