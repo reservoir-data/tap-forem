@@ -66,7 +66,7 @@ class Articles(PaginatedForemStream):
         th.Property("crossposted_at", th.DateTimeType),
         th.Property("published_at", th.DateTimeType),
         th.Property("last_comment_at", th.DateTimeType),
-        th.Property("tag_list", th.ArrayType(th.StringType)),
+        th.Property("tag_list", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
         th.Property("tags", th.StringType),
         th.Property("collection_id", th.IntegerType),
         th.Property("reading_time_minutes", th.IntegerType),
