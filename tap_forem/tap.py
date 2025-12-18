@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import override
+
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
 
@@ -41,6 +43,7 @@ class TapForem(Tap):
         ),
     ).to_dict()
 
+    @override
     def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams."""
         return [stream_class(tap=self) for stream_class in STREAM_TYPES]
