@@ -1,15 +1,48 @@
-# `tap-forem`
+<div align="center">
+
+# tap-forem
+
+<div>
+  <a href="https://github.com/reservoir-data/tap-forem/blob/main/LICENSE">
+    <img alt="License" src="https://img.shields.io/github/license/reservoir-data/tap-forem"/>
+  </a>
+  <a href="https://scientific-python.org/specs/spec-0000/">
+    <img alt="SPEC 0 — Minimum Supported Dependencies" src="https://img.shields.io/badge/SPEC-0-green"/>
+  </a>
+  <a href="https://github.com/astral-sh/ruff">
+    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff" style="max-width:100%;">
+  </a>
+  <a href="https://github.com/astral-sh/uv">
+   <img alt="uv" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json"/>
+  </a>
+  <a href="https://pypi.org/p/tap-forem/">
+    <img alt="Python versions" src="https://img.shields.io/pypi/pyversions/tap-forem"/>
+  </a>
+</div>
 
 Singer tap for the [Forem API](https://developers.forem.com/api).
 
 Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Targets.
 
+</div>
+
 ## Capabilities
 
-* `catalog`
-* `discover`
-* `about`
-* `stream-maps`
+- `catalog`
+- `state`
+- `discover`
+- `activate-version`
+- `about`
+- `stream-maps`
+- `schema-flattening`
+- `batch`
+- `structured-logging`
+
+## Supported Python Versions
+
+- 3.12
+- 3.13
+- 3.14
 
 ### TODO
 

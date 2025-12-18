@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import typing as t
+from typing import TYPE_CHECKING, Any, override
 
 from singer_sdk.authenticators import APIKeyAuthenticator
 from singer_sdk.pagination import BasePageNumberPaginator
 from singer_sdk.streams import RESTStream
 
-if t.TYPE_CHECKING:
+if TYPE_CHECKING:
     from singer_sdk.helpers.types import Context
 
 
@@ -17,11 +17,13 @@ class ForemStream(RESTStream[int]):
 
     records_jsonpath = "$[*]"
 
+    @override
     @property
     def url_base(self) -> str:
         """Return the API URL root, configurable via tap settings."""
         return self.config["api_url"]  # type: ignore[no-any-return]
 
+    @override
     @property
     def authenticator(self) -> APIKeyAuthenticator:
         """Return a new authenticator object."""
@@ -31,6 +33,7 @@ class ForemStream(RESTStream[int]):
             location="header",
         )
 
+    @override
     @property
     def http_headers(self) -> dict[str, str]:
         """Return the http headers needed."""
@@ -43,6 +46,7 @@ class ForemStream(RESTStream[int]):
 class PaginatedForemStream(ForemStream):
     """Forem stream with pagination."""
 
+    @override
     def get_new_paginator(self) -> BasePageNumberPaginator:
         """Get a fresh paginator.
 
@@ -51,11 +55,12 @@ class PaginatedForemStream(ForemStream):
         """
         return BasePageNumberPaginator(1)
 
+    @override
     def get_url_params(
         self,
-        context: Context | None,  # noqa: ARG002
-        next_page_token: t.Any | None,  # noqa: ANN401
-    ) -> dict[str, t.Any]:
+        context: Context | None,
+        next_page_token: Any | None,
+    ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         return {
             "page": next_page_token,

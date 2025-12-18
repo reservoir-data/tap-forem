@@ -1,6 +1,8 @@
-version: 1
+requires_meltano: ">=4.0"
 send_anonymous_usage_stats: true
 project_id: dda4156e-bb27-489c-93ca-aeacbc92a478
+python: "3.14"
+default_environment: dev
 venv:
   backend: uv
 plugins:
@@ -12,6 +14,10 @@ plugins:
     - state
     - catalog
     - discover
+    - about
+    - structured-logging
+    - batch
+    - activate-version
     settings:
     - name: api_key
       kind: string

@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import typing as t
+from typing import TYPE_CHECKING, Any, override
 
 from singer_sdk import typing as th
 
 from tap_forem.client import ForemStream, PaginatedForemStream
 
-if t.TYPE_CHECKING:
+if TYPE_CHECKING:
     from singer_sdk.helpers.types import Context
 
 USER_TYPE = th.ObjectType(
@@ -81,21 +81,23 @@ class Articles(PaginatedForemStream):
         th.Property("published_timestamp", th.DateTimeType),
     ).to_dict()
 
+    @override
     def get_url_params(
         self,
         context: Context | None,
-        next_page_token: t.Any | None,  # noqa: ANN401
-    ) -> dict[str, t.Any]:
+        next_page_token: Any | None,
+    ) -> dict[str, Any]:
         """Get query parameters."""
         params = super().get_url_params(context, next_page_token)
         params["tag"] = self.config.get("tag")
         return params
 
+    @override
     def get_child_context(
         self,
-        record: dict[str, t.Any],
-        context: Context | None,  # noqa: ARG002
-    ) -> dict[str, t.Any]:
+        record: dict[str, Any],
+        context: Context | None,
+    ) -> dict[str, Any]:
         """Get context for article children."""
         return {"article_id": record["id"], "comments_count": record["comments_count"]}
 
@@ -123,11 +125,12 @@ class Comments(ForemStream):
         th.Property("user", USER_TYPE),
     ).to_dict()
 
+    @override
     def get_url_params(
         self,
         context: Context | None,
-        next_page_token: t.Any | None,  # noqa: ANN401
-    ) -> dict[str, t.Any] | str:
+        next_page_token: Any | None,
+    ) -> dict[str, Any] | str:
         """Get query parameters."""
         params = super().get_url_params(context, next_page_token)
         if context:
