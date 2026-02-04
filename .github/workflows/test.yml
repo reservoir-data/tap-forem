@@ -24,6 +24,9 @@ on:
   # Every 4 days at 12:00 UTC
   - cron: "0 12 */4 * *"
 
+permissions:
+  contents: read
+
 env:
   FORCE_COLOR: "1"
   # renovate: datasource=pypi depName=uv
