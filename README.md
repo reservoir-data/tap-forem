@@ -46,15 +46,15 @@ Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Target
 
 ### TODO
 
-* `state`
+- `state`
 
 ## Settings
 
-| Setting | Required | Default             | Description                  |
+| Setting | Required | Default | Description |
 | :------ | :------- | :------------------ | :--------------------------- |
-| api_key | True     | None                | The Forem API key.           |
-| tag     | True     | None                | Tag for filter articles by.  |
-| api_url | False    | https://dev.to/api/ | The url for the API service. |
+| api_key | True | None | The Forem API key. |
+| tag | True | None | Tag for filter articles by. |
+| api_url | False | https://dev.to/api/ | The url for the API service. |
 
 A full list of supported settings and capabilities is available by running: `tap-forem --about`
 
@@ -89,7 +89,7 @@ uv sync
 ### Create and Run Tests
 
 Create tests within the `tests` folder and
-  then run:
+then run:
 
 ```bash
 uv run pytest
