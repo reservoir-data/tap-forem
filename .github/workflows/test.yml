@@ -39,7 +39,7 @@ env:
 jobs:
   build-package:
     name: Build & verify package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       supported-python-versions: ${{ steps.baipp.outputs.supported_python_classifiers_json_array }}
     steps:
@@ -52,7 +52,7 @@ jobs:
 
   tests:
     name: Integration tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build-package
     strategy:
       fail-fast: false
