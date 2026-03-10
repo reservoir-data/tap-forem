@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, override
 
 from singer_sdk.authenticators import APIKeyAuthenticator
-from singer_sdk.pagination import BasePageNumberPaginator
+from singer_sdk.pagination import PageNumberPaginator
 from singer_sdk.streams import RESTStream
 
 if TYPE_CHECKING:
@@ -47,13 +47,8 @@ class PaginatedForemStream(ForemStream):
     """Forem stream with pagination."""
 
     @override
-    def get_new_paginator(self) -> BasePageNumberPaginator:
-        """Get a fresh paginator.
-
-        Returns:
-            A new paginator for the Forem API.
-        """
-        return BasePageNumberPaginator(1)
+    def get_new_paginator(self) -> PageNumberPaginator:
+        return PageNumberPaginator(1)
 
     @override
     def get_url_params(
