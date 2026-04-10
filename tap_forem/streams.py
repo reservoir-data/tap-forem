@@ -134,7 +134,7 @@ class Comments(ForemStream):
         """Get query parameters."""
         params: dict[str, Any] = {}
         if context:
-            params["a_id"] = context["article_id"]  # type: ignore[index]
+            params["a_id"] = context["article_id"]
         return params
 
     def should_sync(self, context: Context | None) -> bool:
