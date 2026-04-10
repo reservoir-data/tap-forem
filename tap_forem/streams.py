@@ -132,7 +132,7 @@ class Comments(ForemStream):
         next_page_token: Any | None,
     ) -> dict[str, Any] | str:
         """Get query parameters."""
-        params = super().get_url_params(context, next_page_token)
+        params: dict[str, Any] = {}
         if context:
             params["a_id"] = context["article_id"]  # type: ignore[index]
         return params
