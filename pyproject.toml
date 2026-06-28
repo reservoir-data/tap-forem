@@ -7,7 +7,7 @@ requires = [
 
 [project]
 name = "tap-forem"
-description = "`tap-forem` is a Singer tap for Forem, built with the Meltano SDK for Singer Taps."
+description = "Singer tap for Forem, built with the Meltano SDK for Singer Taps."
 readme = "README.md"
 keywords = [
   "ELT",
@@ -25,7 +25,7 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "singer-sdk~=0.54.0a5",
+  "singer-sdk~=0.54.5",
 ]
 [[project.authors]]
 name = "Edgar Ramírez-Mondragón"
@@ -36,24 +36,24 @@ file = "LICENSE"
 name = "Edgar Ramírez-Mondragón"
 email = "edgarrm358@gmail.com"
 [project.scripts]
-"tap-forem" = "tap_forem.tap:TapForem.cli"
+tap-forem = "tap_forem.tap:TapForem.cli"
 [project.urls]
 "Issue Tracker" = "https://github.com/reservoir-data/tap-forem/issues"
 Repository = "https://github.com/reservoir-data/tap-forem"
 
 [dependency-groups]
 dev = [
+  "deptry>=0.25",
   { include-group = "testing" },
   { include-group = "typing" },
 ]
 testing = [
-  "deptry>=0.12",
   "pytest>=7.4",
   "singer-sdk[testing]",
 ]
 typing = [
-  "mypy",
-  "ty>=0.0.1a26",
+  "mypy>=2.1",
+  "ty>=0.0.50",
 ]
 
 [tool.hatch.version]
@@ -83,22 +83,22 @@ unfixable = [
   "ERA001", # commented-out-code
 ]
 flake8-annotations.allow-star-arg-any = true
-isort.known-first-party = [
-  "tap_forem",
-]
-isort.required-imports = [
-  "from __future__ import annotations",
-]
 pydocstyle.convention = "google"
-
-[tool.deptry.package_module_name_map]
-mypy = "mypy"
 
 [tool.pyproject-fmt]
 table_format = "long"
 
+[tool.mypy]
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
+strict = true
+warn_unused_configs = true
+
 [tool.pytest]
-addopts = [ "-vvv", "-ra", "--strict-config", "--strict-markers" ]
+addopts = [ "-v", "-ra" ]
 filterwarnings = [
   "error",
   "default:Fields in transformed catalog but not in records:UserWarning",
@@ -109,19 +109,18 @@ testpaths = [ "tests" ]
 xfail_strict = true
 
 [tool.tox]
-min_version = "4.43"
+requires = [
+  "tox>=4.55",
+  "tox-uv>=1.35",
+]
 env_list = [
   "dependencies",
   "typing",
-  { product = [
-    { prefix = "3.", start = 12 },
-  ] },
+  { prefix = "3.", start = 12 },
 ]
-
 [tool.tox.env.dependencies]
-dependency_groups = [ "testing" ]
+dependency_groups = [ "dev" ]
 commands = [ [ "deptry", "." ] ]
-
 [tool.tox.env.typing]
 dependency_groups = [ "testing", "typing" ]
 commands = [
@@ -131,15 +130,6 @@ commands = [
 
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
-pass_env = [ "TAP_FOREM_*" ]
 dependency_groups = [ "testing" ]
+pass_env = [ "TAP_FOREM_*" ]
 commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
-
-[tool.mypy]
-enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
-strict = true
-warn_no_return = true
-warn_redundant_casts = true
-warn_unreachable = true
-warn_unused_configs = true
-warn_unused_ignores = true
