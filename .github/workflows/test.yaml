@@ -9,7 +9,7 @@ on:
       - pyproject.toml
       - tox.ini
       - uv.lock
-      - .github/workflows/test.yml
+      - .github/workflows/test.yaml
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -18,7 +18,7 @@ on:
       - pyproject.toml
       - tox.ini
       - uv.lock
-      - .github/workflows/test.yml
+      - .github/workflows/test.yaml
   workflow_dispatch:
   schedule:
   # Every 4 days at 12:00 UTC
@@ -34,11 +34,11 @@ concurrency:
 env:
   FORCE_COLOR: "1"
   # renovate: datasource=pypi depName=uv
-  UV_VERSION: 0.10.4
+  UV_VERSION: 0.11.25
   # renovate: datasource=pypi depName=tox
-  TOX_VERSION: 4.44.0
+  TOX_VERSION: 4.56.1
   # renovate: datasource=pypi depName=tox-uv
-  TOX_UV_VERSION: 1.29.0
+  TOX_UV_VERSION: 1.35.2
 
 jobs:
   build-package:
