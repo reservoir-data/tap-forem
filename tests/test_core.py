@@ -6,8 +6,4 @@ from singer_sdk.testing import get_tap_test_class
 
 from tap_forem.tap import TapForem
 
-SAMPLE_CONFIG = {
-    "tag": "meltano",
-}
-
-TestTapForem = get_tap_test_class(TapForem, config=SAMPLE_CONFIG)
+TestTapForem = get_tap_test_class(TapForem)

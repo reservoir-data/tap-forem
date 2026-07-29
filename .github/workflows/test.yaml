@@ -76,6 +76,7 @@ jobs:
     - name: Run
       env:
         TAP_FOREM_API_KEY: ${{ secrets.TAP_FOREM_API_KEY }}
+        TAP_FOREM_TAG: ${{ secrets.TAP_FOREM_TAG }}
         MATRIX_PYTHON_VERSION: ${{ matrix.python-version }}
       run: >
         uvx
