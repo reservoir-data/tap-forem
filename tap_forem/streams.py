@@ -1,4 +1,7 @@
-"""Stream type classes for tap-forem."""
+"""Stream type classes for tap-forem.
+
+Copyright (c) 2026 Edgar-Ramírez Mondragón
+"""
 
 from __future__ import annotations
 
@@ -20,6 +23,7 @@ USER_TYPE = th.ObjectType(
     th.Property("profile_image", th.StringType),
     th.Property("profile_image_90", th.StringType),
     th.Property("user_id", th.IntegerType),
+    additional_properties=True,
 )
 
 ORG_TYPE = th.ObjectType(

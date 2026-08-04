@@ -43,6 +43,7 @@ Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Target
 - 3.12
 - 3.13
 - 3.14
+- 3.15
 
 ### TODO
 

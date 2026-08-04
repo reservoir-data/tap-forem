@@ -1,4 +1,7 @@
-"""REST client handling, including ForemStream base class."""
+"""REST client handling, including ForemStream base class.
+
+Copyright (c) 2026 Edgar-Ramírez Mondragón
+"""
 
 from __future__ import annotations
 
@@ -38,7 +41,6 @@ class ForemStream(RESTStream[int]):
     def http_headers(self) -> dict[str, str]:
         """Return the http headers needed."""
         return {
-            "User-Agent": f"{self.tap_name}/{self._tap.plugin_version}",
             "Accept": "application/vnd.forem.api-v1+json",
         }
 
